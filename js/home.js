@@ -63,6 +63,39 @@ function renderAlmostThere() {
   document.getElementById("almost-subtitle").textContent = c.subtitle;
 }
 
+/**
+ * "Keep Scrolling" isn't just a label — scrolling this section
+ * into view actually carries you on to the credits page, instead
+ * of dead-ending like the original site did.
+ *
+ * Triggers once the section is mostly in view (60%), so a user
+ * has to genuinely scroll down to it rather than getting bounced
+ * from a sliver peeking into the viewport.
+ */
+function initScrollToCredits() {
+  const section = document.getElementById("almost-there-section");
+  if (!section) return;
+
+  const targetUrl = SITE_CONTENT.home.almostThere.targetUrl;
+  if (!targetUrl) return; // no target configured — stay put, don't navigate
+
+  let hasNavigated = false;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.6 && !hasNavigated) {
+          hasNavigated = true;
+          window.location.href = targetUrl;
+        }
+      });
+    },
+    { threshold: [0.6] }
+  );
+
+  observer.observe(section);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   renderHero();
   renderReleasing();
@@ -70,4 +103,5 @@ document.addEventListener("DOMContentLoaded", () => {
   renderSneakPeeks();
   renderAlmostThere();
   renderDecoSquares("deco-layer", 6);
+  initScrollToCredits();
 });
