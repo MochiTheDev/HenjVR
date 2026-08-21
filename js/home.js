@@ -3,22 +3,12 @@
 // import and call them, instead of this file grabbing #root
 // and rendering itself the moment it loads.
 
-const MONKEY_IMG =
-  "https://media.base44.com/images/public/6a84f55d456ff6f1ee0a2e3d/e0e195cd1_Screenshot2026-08-16192822.png";
+const MONKEY_IMG = "assets/images/logo.png";
 
 const SNEAK_ITEMS = [
-  {
-    img: "https://media.base44.com/images/public/6a84f55d456ff6f1ee0a2e3d/c2f507b4c_Screenshot2026-08-20003722.png",
-    label: "Storage Crate"
-  },
-  {
-    img: "https://media.base44.com/images/public/6a84f55d456ff6f1ee0a2e3d/b70de46bd_Screenshot2026-08-17151141.png",
-    label: "Santa Hat"
-  },
-  {
-    img: "https://media.base44.com/images/public/6a84f55d456ff6f1ee0a2e3d/841e82be4_Screenshot2026-08-20113515.png",
-    label: "Gazebo Pt2"
-  }
+  { img: "assets/images/sneak-peek-crate.png", label: "Storage Crate" },
+  { img: "assets/images/sneak-peek-santa-hat.png", label: "Santa Hat" },
+  { img: "assets/images/sneak-peek-gazebo.png", label: "Gazebo Pt2" }
 ];
 
 const PARTICLES = [
