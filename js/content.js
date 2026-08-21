@@ -105,11 +105,12 @@ const SITE_CONTENT = {
       ]
     },
 
-    almostThere: {
-      eyebrow: "Almost There",
-      title: "Keep Scrolling",
-      subtitle: "Meet the monkeys behind HenjVR..."
-    }
+  almostThere: {
+    eyebrow: "Almost There",
+    title: "Keep Scrolling",
+    subtitle: "Meet the monkeys behind HenjVR...",
+    targetUrl: "credits.html"
+  }
   },
 
   // ---- Credits / Owners page -----------------------------------
