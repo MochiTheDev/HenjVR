@@ -58,7 +58,7 @@ const SITE_CONTENT = {
     eyebrow: "Gorilla Tag Physics",
 
     hero: {
-      image: "assets/images/hero-character.png",
+      image: "assets/images/logo.png",
       title: { main: "HENJ", accent: "VR" },
       description: "HenjVR stands for Independence, which is what we hope to show this game. — HenjVR Developers",
       // If comingSoonUrl is empty, the button becomes an inert
