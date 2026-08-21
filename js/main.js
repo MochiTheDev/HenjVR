@@ -1,37 +1,40 @@
-// main.js
-
+// src/main.js
 "use strict";
+
+import {
+  buildNavbar,
+  buildHero,
+  buildRelease,
+  buildCommunity,
+  buildSneakPeek,
+  buildScrollTeaser,
+  buildFooter,
+  setupNavbarScroll,
+  setupHeroParallax,
+  setupMouseTracker,
+  setupClickPop
+} from "./home.js";
+
+import { buildCreditsPage, setupReveals } from "./credits.js";
 
 // ============================================================
 // App State
 // ============================================================
 
 let currentView = "home";
-
 const appRoot = document.getElementById("root");
-
 
 // ============================================================
 // Navigation
 // ============================================================
 
-function navigateTo(view, withReveal = false) {
+function navigateTo(view) {
   currentView = view;
+  window.scrollTo({ top: 0, behavior: "instant" });
 
-  window.scrollTo({
-    top: 0,
-    behavior: "instant"
-  });
-
-  if (view === "home") {
-    renderHome();
-  }
-
-  if (view === "credits") {
-    renderCredits(withReveal);
-  }
+  if (view === "home") renderHome();
+  if (view === "credits") renderCredits();
 }
-
 
 // ============================================================
 // Home Renderer
@@ -39,140 +42,49 @@ function navigateTo(view, withReveal = false) {
 
 function renderHome() {
   if (!appRoot) return;
-
   appRoot.innerHTML = "";
 
   const wrapper = document.createElement("div");
+  wrapper.appendChild(buildNavbar());
 
-  // Navbar
-  if (typeof buildNavbar === "function") {
-    wrapper.appendChild(buildNavbar());
-  }
-
-  // Home content
   const main = document.createElement("main");
-
-  if (typeof buildHero === "function") {
-    main.appendChild(buildHero());
-  }
-
-  if (typeof buildRelease === "function") {
-    main.appendChild(buildRelease());
-  }
-
-  if (typeof buildCommunity === "function") {
-    main.appendChild(buildCommunity());
-  }
-
-  if (typeof buildSneakPeek === "function") {
-    main.appendChild(buildSneakPeek());
-  }
-
-  if (typeof buildScrollTeaser === "function") {
-    main.appendChild(buildScrollTeaser());
-  }
-
+  main.appendChild(buildHero());
+  main.appendChild(buildRelease());
+  main.appendChild(buildCommunity());
+  main.appendChild(buildSneakPeek());
+  main.appendChild(buildScrollTeaser());
   wrapper.appendChild(main);
 
-  // Footer
-  if (typeof buildFooter === "function") {
-    wrapper.appendChild(buildFooter());
-  }
-
+  wrapper.appendChild(buildFooter());
   appRoot.appendChild(wrapper);
 
-  // Setup home functionality
-  if (typeof setupNavbarScroll === "function") {
-    setupNavbarScroll();
-  }
-
-  if (typeof setupHeroParallax === "function") {
-    setupHeroParallax();
-  }
-
-  if (typeof setupScrollToCredits === "function") {
-    setupScrollToCredits();
-  }
+  setupNavbarScroll();
+  setupHeroParallax();
 }
-
 
 // ============================================================
 // Credits Renderer
 // ============================================================
 
-function renderCredits(withReveal = false) {
+function renderCredits() {
   if (!appRoot) return;
-
   appRoot.innerHTML = "";
 
   const wrapper = document.createElement("div");
-
-  // Optional transition
-  if (withReveal && typeof buildWaveReveal === "function") {
-    const wave = buildWaveReveal(() => {
-      if (wave.parentNode) {
-        wave.parentNode.removeChild(wave);
-      }
-    });
-
-    wrapper.appendChild(wave);
-  }
-
-  // Navbar
-  if (typeof buildNavbar === "function") {
-    wrapper.appendChild(buildNavbar());
-  }
-
-  // Credits page
-  if (typeof buildCreditsPage === "function") {
-    wrapper.appendChild(buildCreditsPage());
-  }
-
-  // Footer
-  if (typeof buildFooter === "function") {
-    wrapper.appendChild(buildFooter());
-  }
-
+  wrapper.appendChild(buildNavbar());
+  wrapper.appendChild(buildCreditsPage());
+  wrapper.appendChild(buildFooter());
   appRoot.appendChild(wrapper);
 
-  // Setup credits functionality
-  if (typeof setupNavbarScroll === "function") {
-    setupNavbarScroll();
-  }
-
-  if (typeof setupReveals === "function") {
-    setupReveals(wrapper);
-  }
+  setupNavbarScroll();
+  setupReveals(wrapper);
 }
 
-
 // ============================================================
-// Credits Transition
+// Automatic "keep scrolling" -> Credits trigger
 // ============================================================
-
-function openCredits() {
-  if (typeof buildCreditsTransition !== "function") {
-    navigateTo("credits", true);
-    return;
-  }
-
-  const overlay = buildCreditsTransition();
-
-  document.body.appendChild(overlay);
-
-  setTimeout(() => {
-    navigateTo("credits", true);
-
-    if (overlay && overlay.parentNode) {
-      overlay.parentNode.removeChild(overlay);
-    }
-  }, 900);
-}
-
-
-// ============================================================
-// Automatic Credits Trigger
-// ============================================================
+// Only active on the home view. Fires once you scroll close to
+// the bottom of the page (past the "Keep Scrolling" teaser).
 
 function setupCreditsScrollTrigger() {
   let triggered = false;
@@ -180,37 +92,28 @@ function setupCreditsScrollTrigger() {
   window.addEventListener(
     "scroll",
     () => {
-      if (triggered) return;
+      if (triggered || currentView !== "home") return;
 
-      const scrollBottom =
-        window.scrollY + window.innerHeight;
+      const scrollBottom = window.scrollY + window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
 
-      const documentHeight =
-        document.documentElement.scrollHeight;
-
-      if (
-        window.scrollY > 120 &&
-        scrollBottom >= documentHeight - 40
-      ) {
+      if (window.scrollY > 120 && scrollBottom >= documentHeight - 40) {
         triggered = true;
-
-        openCredits();
+        navigateTo("credits");
+        // Reset the trigger once we've left, so it can fire again
+        // if the user navigates back home and scrolls down again.
+        setTimeout(() => { triggered = false; }, 1000);
       }
     },
     { passive: true }
   );
 }
 
-
 // ============================================================
-// Global Navigation
+// Global Navigation (used by onclick handlers in home.js / credits.js)
 // ============================================================
 
 window.navigateTo = navigateTo;
-window.openCredits = openCredits;
-window.renderHome = renderHome;
-window.renderCredits = renderCredits;
-
 
 // ============================================================
 // Start App
@@ -223,14 +126,13 @@ function init() {
   }
 
   renderHome();
-
   setupCreditsScrollTrigger();
+
+  // Page-level effects that live outside #root — set up once,
+  // not on every render.
+  setupMouseTracker();
+  setupClickPop();
 }
-
-
-// ============================================================
-// DOM Ready
-// ============================================================
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", init);
