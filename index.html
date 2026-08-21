@@ -1,68 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>HenjVR</title>
-  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body>
-  <div id="deco-layer" style="position:relative;"></div>
 
-  <header class="site-header" id="site-header"></header>
+  <!-- ======================================================
+       Mouse Tracker
+       ====================================================== -->
 
-  <main>
-    <section class="hero">
-      <div class="eyebrow-tag">
-        <span class="dot"></span>
-        <span id="hero-eyebrow"></span>
-      </div>
+  <div
+    class="mouse-tracker"
+    aria-hidden="true"
+  >
+    <div
+      class="mt-glow"
+      id="mtGlow"
+    ></div>
 
-      <div class="hero-portrait">
-        <img id="hero-portrait" alt="HenjVR character" />
-      </div>
+    <div
+      class="mt-dot1"
+      id="mtDot1"
+    ></div>
 
-      <h1 class="hero-title" id="hero-title"></h1>
-      <p class="hero-desc" id="hero-desc"></p>
+    <div
+      class="mt-dot2"
+      id="mtDot2"
+    ></div>
+  </div>
 
-      <a class="btn btn-outline" id="coming-soon-btn"></a>
-      <div class="scroll-hint" id="scroll-hint"></div>
-    </section>
 
-    <section class="releasing">
-      <h2 id="releasing-title"></h2>
-      <div class="range" id="releasing-range"></div>
-      <p class="note" id="releasing-note"></p>
-    </section>
+  <!-- ======================================================
+       Click Pop Effects
+       ====================================================== -->
 
-    <section class="community-banner">
-      <p id="community-quote"></p>
-      <div class="attribution" id="community-attribution"></div>
-    </section>
+  <div
+    class="click-pop-layer"
+    id="clickPopLayer"
+    aria-hidden="true"
+  ></div>
 
-    <section class="section">
-      <h2 id="sneak-eyebrow"></h2>
-      <p class="lede" id="sneak-title"></p>
-      <div class="card-grid" id="sneak-grid"></div>
-    </section>
 
-    <section class="almost-there" id="almost-there-section">
+  <!-- ======================================================
+       Main Application
+       ====================================================== -->
 
-    <section class="almost-there">
-      <div class="eyebrow-tag">
-        <span class="dot"></span>
-        <span id="almost-eyebrow"></span>
-      </div>
-      <h2 id="almost-title"></h2>
-      <p class="subtitle" id="almost-subtitle"></p>
-      <div class="chevrons">▾ ▾ ▾</div>
-    </section>
-  </main>
+  <div id="root"></div>
 
-  <footer class="site-footer" id="site-footer"></footer>
 
-  <script src="js/content.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/home.js"></script>
+  <!-- ======================================================
+       Main JavaScript
+       ====================================================== -->
+
+  <script
+    type="module"
+    src="./src/main.js"
+  ></script>
+
 </body>
 </html>
