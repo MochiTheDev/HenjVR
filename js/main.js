@@ -1,119 +1,239 @@
-/**
- * main.js — shared behavior for every page.
- * Reads only from SITE_CONTENT (content.js). Never hardcode
- * copy or URLs in here — add them to content.js instead.
- */
+// main.js
 
-/** Applies a URL to an <a>, or marks it inert if the URL is empty. */
-function wireLink(el, url) {
-  if (!el) return;
-  if (url && url.trim() !== "") {
-    el.href = url;
-    el.removeAttribute("data-disabled");
-    if (url.startsWith("http")) {
-      el.target = "_blank";
-      el.rel = "noopener noreferrer";
-    }
-  } else {
-    el.removeAttribute("href");
-    el.setAttribute("data-disabled", "true");
-    el.setAttribute("aria-disabled", "true");
-    el.title = "Coming soon";
+"use strict";
+
+// ============================================================
+// App State
+// ============================================================
+
+let currentView = "home";
+
+const appRoot = document.getElementById("root");
+
+
+// ============================================================
+// Navigation
+// ============================================================
+
+function navigateTo(view, withReveal = false) {
+  currentView = view;
+
+  window.scrollTo({
+    top: 0,
+    behavior: "instant"
+  });
+
+  if (view === "home") {
+    renderHome();
+  }
+
+  if (view === "credits") {
+    renderCredits(withReveal);
   }
 }
 
-function renderHeader() {
-  const mount = document.getElementById("site-header");
-  if (!mount) return;
-  const { brand, nav } = SITE_CONTENT;
 
-  mount.innerHTML = `
-    <a class="brand-link" href="${brand.homeUrl}">
-      <img src="${brand.logoImage}" alt="${brand.name}${brand.accent} logo" />
-      <span>${brand.name}<span class="brand-accent">${brand.accent}</span></span>
-    </a>
-    <a class="btn" id="header-discord-link">${nav.discord.label}</a>
-  `;
-  wireLink(document.getElementById("header-discord-link"), nav.discord.url);
+// ============================================================
+// Home Renderer
+// ============================================================
+
+function renderHome() {
+  if (!appRoot) return;
+
+  appRoot.innerHTML = "";
+
+  const wrapper = document.createElement("div");
+
+  // Navbar
+  if (typeof buildNavbar === "function") {
+    wrapper.appendChild(buildNavbar());
+  }
+
+  // Home content
+  const main = document.createElement("main");
+
+  if (typeof buildHero === "function") {
+    main.appendChild(buildHero());
+  }
+
+  if (typeof buildRelease === "function") {
+    main.appendChild(buildRelease());
+  }
+
+  if (typeof buildCommunity === "function") {
+    main.appendChild(buildCommunity());
+  }
+
+  if (typeof buildSneakPeek === "function") {
+    main.appendChild(buildSneakPeek());
+  }
+
+  if (typeof buildScrollTeaser === "function") {
+    main.appendChild(buildScrollTeaser());
+  }
+
+  wrapper.appendChild(main);
+
+  // Footer
+  if (typeof buildFooter === "function") {
+    wrapper.appendChild(buildFooter());
+  }
+
+  appRoot.appendChild(wrapper);
+
+  // Setup home functionality
+  if (typeof setupNavbarScroll === "function") {
+    setupNavbarScroll();
+  }
+
+  if (typeof setupHeroParallax === "function") {
+    setupHeroParallax();
+  }
+
+  if (typeof setupScrollToCredits === "function") {
+    setupScrollToCredits();
+  }
 }
 
-function renderFooter() {
-  const mount = document.getElementById("site-footer");
-  if (!mount) return;
-  const { brand, footer } = SITE_CONTENT;
 
-  const columns = footer.columns
-    .map(
-      (col) => `
-      <div class="footer-col">
-        <h4>${col.heading}</h4>
-        ${col.links
-          .map(
-            (link, i) =>
-              `<a data-footer-link="${col.heading}-${i}">${link.label}</a>`
-          )
-          .join("")}
-      </div>`
-    )
-    .join("");
+// ============================================================
+// Credits Renderer
+// ============================================================
 
-  mount.innerHTML = `
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a class="brand-link" href="${brand.homeUrl}">
-          <img src="${brand.logoImage}" alt="${brand.name}${brand.accent} logo" />
-          <span>${brand.name}<span class="brand-accent">${brand.accent}</span></span>
-        </a>
-        <p>${footer.tagline}</p>
-      </div>
-      ${columns}
-    </div>
-    <div class="footer-bottom">
-      <span>${footer.copyright}</span>
-      <span>${footer.madeBy}</span>
-    </div>
-  `;
+function renderCredits(withReveal = false) {
+  if (!appRoot) return;
 
-  footer.columns.forEach((col) => {
-    col.links.forEach((link, i) => {
-      wireLink(
-        mount.querySelector(`[data-footer-link="${col.heading}-${i}"]`),
-        link.url
-      );
+  appRoot.innerHTML = "";
+
+  const wrapper = document.createElement("div");
+
+  // Optional transition
+  if (withReveal && typeof buildWaveReveal === "function") {
+    const wave = buildWaveReveal(() => {
+      if (wave.parentNode) {
+        wave.parentNode.removeChild(wave);
+      }
     });
-  });
-}
 
-/** Scatters a handful of decorative squares into a container. */
-function renderDecoSquares(containerId, count = 5) {
-  const el = document.getElementById(containerId);
-  if (!el) return;
-  const variants = ["pink", "purple", "outline"];
-  for (let i = 0; i < count; i++) {
-    const sq = document.createElement("div");
-    sq.className = `deco-square ${variants[i % variants.length]}`;
-    sq.style.top = `${Math.random() * 90 + 5}%`;
-    sq.style.left = `${Math.random() * 90 + 5}%`;
-    el.appendChild(sq);
+    wrapper.appendChild(wave);
+  }
+
+  // Navbar
+  if (typeof buildNavbar === "function") {
+    wrapper.appendChild(buildNavbar());
+  }
+
+  // Credits page
+  if (typeof buildCreditsPage === "function") {
+    wrapper.appendChild(buildCreditsPage());
+  }
+
+  // Footer
+  if (typeof buildFooter === "function") {
+    wrapper.appendChild(buildFooter());
+  }
+
+  appRoot.appendChild(wrapper);
+
+  // Setup credits functionality
+  if (typeof setupNavbarScroll === "function") {
+    setupNavbarScroll();
+  }
+
+  if (typeof setupReveals === "function") {
+    setupReveals(wrapper);
   }
 }
 
-function initCustomCursor() {
-  const dot = document.createElement("div");
-  dot.id = "cursor-dot";
-  document.body.appendChild(dot);
-  window.addEventListener("mousemove", (e) => {
-    dot.style.left = `${e.clientX}px`;
-    dot.style.top = `${e.clientY}px`;
-  });
-  // Hide on touch devices where a synthetic cursor doesn't make sense.
-  window.addEventListener("touchstart", () => (dot.style.display = "none"), {
-    once: true,
-  });
+
+// ============================================================
+// Credits Transition
+// ============================================================
+
+function openCredits() {
+  if (typeof buildCreditsTransition !== "function") {
+    navigateTo("credits", true);
+    return;
+  }
+
+  const overlay = buildCreditsTransition();
+
+  document.body.appendChild(overlay);
+
+  setTimeout(() => {
+    navigateTo("credits", true);
+
+    if (overlay && overlay.parentNode) {
+      overlay.parentNode.removeChild(overlay);
+    }
+  }, 900);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  initCustomCursor();
-  renderHeader();
-  renderFooter();
-});
+
+// ============================================================
+// Automatic Credits Trigger
+// ============================================================
+
+function setupCreditsScrollTrigger() {
+  let triggered = false;
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (triggered) return;
+
+      const scrollBottom =
+        window.scrollY + window.innerHeight;
+
+      const documentHeight =
+        document.documentElement.scrollHeight;
+
+      if (
+        window.scrollY > 120 &&
+        scrollBottom >= documentHeight - 40
+      ) {
+        triggered = true;
+
+        openCredits();
+      }
+    },
+    { passive: true }
+  );
+}
+
+
+// ============================================================
+// Global Navigation
+// ============================================================
+
+window.navigateTo = navigateTo;
+window.openCredits = openCredits;
+window.renderHome = renderHome;
+window.renderCredits = renderCredits;
+
+
+// ============================================================
+// Start App
+// ============================================================
+
+function init() {
+  if (!appRoot) {
+    console.error("HenjVR: #root element was not found.");
+    return;
+  }
+
+  renderHome();
+
+  setupCreditsScrollTrigger();
+}
+
+
+// ============================================================
+// DOM Ready
+// ============================================================
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
+}
