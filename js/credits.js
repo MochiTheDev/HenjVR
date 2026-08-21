@@ -5,19 +5,19 @@
 
 const OWNERS = [
   {
-    img: "https://yt3.googleusercontent.com/gT19VNPd6INqTeEHsYHdl0JdHbUhoHlaJS8BwoyGRdLyOCbds5vd4ShDigYBL5XV4ihoLG0WjQY=s160-c-k-c0x00ffffff-no-rj",
+    img: "assets/images/owner-1.png",   // was Stunt's yt3.googleusercontent.com URL
     channel: "https://www.youtube.com/channel/UCo7XiSXx7lBhLkw9NtHLdRQ",
     name: "Stunt",
     role: "Main Developer"
   },
   {
-    img: "https://yt3.googleusercontent.com/qkCuXVi7lBWQbGenxHWPrM4dLm4n8Y74WsH56HkLCCRviP-oMelJ-QPgWFAq6WPUKCpwkaYadw=s160-c-k-c0x00ffffff-no-rj",
+    img: "assets/images/owner-2.png",   // was Cyanking's yt3.googleusercontent.com URL
     channel: "https://www.youtube.com/@CyanKingVR",
     name: "Cyanking",
     role: "Main Modeler"
   },
   {
-    img: "https://cdn.discordapp.com/attachments/1538658994741317785/1540124682479734935/image.png?ex=6a88d062&is=6a877ee2&hm=e4f4be5953028d440a8e520f6213e2b874b72451a14bcf4076d8bef6928f1de7&",
+    img: "assets/images/owner-3.png",   // was Cheese's discordapp.com URL
     channel: "https://www.youtube.com/@TGGcheese",
     name: "Cheese",
     role: "Manager"
