@@ -29,12 +29,12 @@ const SITE_CONTENT = {
   nav: {
     discord: {
       label: "Discord",
-      url: "https://discord.gg/REPLACE_WITH_REAL_INVITE"
+      url: "https://discord.gg/e8nNujkpF"
     }
   },
 
   footer: {
-    tagline: "A community-built fan game inspired by Gorilla Tag. Not affiliated with Another Axiom. Made by monkeys, for monkeys.",
+    tagline: "A community-built fan game inspired by Gorilla Tag. Not affiliated with Another Axiom.",
     columns: [
       {
         heading: "Navigate",
@@ -45,7 +45,7 @@ const SITE_CONTENT = {
       {
         heading: "Community",
         links: [
-          { label: "Discord", url: "https://discord.gg/REPLACE_WITH_REAL_INVITE" }
+          { label: "Discord", url: "https://discord.gg/e8nNujkpF" }
         ]
       }
     ],
@@ -124,21 +124,21 @@ const SITE_CONTENT = {
         name: "Owner",
         role: "Main Developer",
         image: "assets/images/owner-1.png",
-        youtubeUrl: "https://www.youtube.com/REPLACE_WITH_REAL_CHANNEL",
+        youtubeUrl: "https://www.youtube.com/@ridecentralofficial",
         badge: ""            // e.g. "Happy B-Day" — leave "" for none
       },
       {
         name: "Owner",
         role: "Main Modeler",
         image: "assets/images/owner-2.png",
-        youtubeUrl: "https://www.youtube.com/REPLACE_WITH_REAL_CHANNEL",
+        youtubeUrl: "https://www.youtube.com/@CyanKingVR",
         badge: "Happy B-Day"
       },
       {
         name: "Owner",
         role: "Manager",
         image: "assets/images/owner-3.png",
-        youtubeUrl: "https://www.youtube.com/REPLACE_WITH_REAL_CHANNEL",
+        youtubeUrl: "https://www.youtube.com/@TGGcheese",
         badge: ""
       }
     ]
